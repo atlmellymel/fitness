@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitness & Health Research Atlas</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f4f7fb;
+  color:#172033;
+  line-height:1.5;
+}
+
+header{
+  background:#172033;
+  color:white;
+  text-align:center;
+  padding:28px 18px;
+}
+
+header h1{margin:0;font-size:32px}
+header p{margin:7px 0 0;opacity:.85}
+
+nav{
+  background:white;
+  border-bottom:1px solid #dbe2ea;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:12px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+nav button{
+  border:1px solid #cbd5e1;
+  background:white;
+  border-radius:22px;
+  padding:10px 15px;
+  cursor:pointer;
+}
+
+nav button:hover,
+nav button.active{
+  background:#2563eb;
+  color:white;
+}
+
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+
+.search{
+  margin-bottom:20px;
+}
+
+.search input{
+  width:100%;
+  padding:15px;
+  font-size:16px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:390px 1fr;
+  gap:20px;
+}
+
+.panel{
+  background:white;
+  border:1px solid #dbe2ea;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 4px 18px rgba(0,0,0,.05);
+}
+
+.body{
+  display:flex;
+  justify-content:center;
+}
+
+.body svg{
+  width:320px;
+  max-width:100%;
+}
+
+.part{
+  fill:#bfdbfe;
+  stroke:#334155;
+  stroke-width:2;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.part:hover{fill:#60a5fa}
+.part.selected{fill:#2563eb}
+
+.card{
+  border:1px solid #dbe2ea;
+  border-radius:12px;
+  padding:16px;
+  margin:12px 0;
+}
+
+.card h3{margin-top:0}
+
+.badge{
+  display:inline-block;
+  padding:4px 9px;
+  margin:3px;
+  border-radius:20px;
+  background:#e8eefc;
+  font-size:12px;
+}
+
+.location{
+  border:1px solid #cbd5e1;
+  background:#f8fafc;
+  padding:9px 12px;
+  border-radius:20px;
+  margin:4px;
+  cursor:pointer;
+}
+
+.location:hover{background:#dbeafe}
+
+.warning{
+  background:#fff7ed;
+  border-left:5px solid #f97316;
+  padding:15px;
+  border-radius:8px;
+  margin:15px 0;
+}
+
+.danger{
+  background:#fff1f2;
+  border-left:5px solid #dc2626;
+}
+
+.section{display:none}
+.section.active{display:block}
+
+a{color:#2563eb}
+
+footer{
+  text-align:center;
+  padding:40px 20px;
+  color:#64748b;
+}
+
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  header h1{font-size:26px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Fitness & Health Research Atlas</h1>
+<p>Interactive body map, symptom research and health resources</p>
+</header>
+
+<nav>
+<button class="active" onclick="showSection('atlas',this)">Body Atlas</button>
+<button onclick="showSection('interventions',this)">Interventions</button>
+<button onclick="showSection('research',this)">Experimental Research</button>
+<button onclick="showSection('foundations',this)">Foundations</button>
+</nav>
+
+<main>
+
+<div class="search">
+<input id="searchBox"
+placeholder="Search body parts, symptoms, supplements or interventions..."
+oninput="searchAll()">
+</div>
+
+
+<!-- BODY ATLAS -->
+
+<section id="atlas" class="section active">
+
+<div class="layout">
+
+<div class="panel">
+
+<h2>Interactive Body</h2>
+
+<p>
+Tap a body region to explore common pain locations,
+possible contributing categories and research references.
+</p>
+
+<div class="body">
+
+<svg viewBox="0 0 300 720">
+
+<circle class="part" id="head" cx="150" cy="48" r="38"
+onclick="openRegion('head')"/>
+
+<rect class="part" id="neck" x="132" y="82"
+width="36" height="35" rx="7"
+onclick="openRegion('neck')"/>
+
+<path class="part" id="leftShoulder"
+d="M132 105 L88 118 L72 165 L116 154 Z"
+onclick="openRegion('leftShoulder')"/>
+
+<path class="part" id="rightShoulder"
+d="M168 105 L212 118 L228 165 L184 154 Z"
+onclick="openRegion('rightShoulder')"/>
+
+<path class="part" id="chest"
+d="M116 145 L184 145 L192 220 L108 220 Z"
+onclick="openRegion('chest')"/>
+
+<path class="part" id="abdomen"
+d="M108 215 L192 215 L185 320 L115 320 Z"
+onclick="openRegion('abdomen')"/>
+
+<path class="part"
+d="M86 145 L48 170 L30 275 L55 285 L82 205 L108 170 Z"
+onclick="openRegion('leftArm')"/>
+
+<path class="part"
+d="M214 145 L252 170 L270 275 L245 285 L218 205 L192 170 Z"
+onclick="openRegion('rightArm')"/>
+
+<path class="part"
+d="M30 275 L55 285 L46 385 L20 380 Z"
+onclick="openRegion('leftForearm')"/>
+
+<path class="part"
+d="M270 275 L245 285 L254 385 L280 380 Z"
+onclick="openRegion('rightForearm')"/>
+
+<path class="part"
+d="M115 315 L185 315 L202 390 L98 390 Z"
+onclick="openRegion('pelvis')"/>
+
+<path class="part"
+d="M98 380 L148 380 L143 510 L98 510 Z"
+onclick="openRegion('leftThigh')"/>
+
+<path class="part"
+d="M152 380 L202 380 L202 510 L157 510 Z"
+onclick="openRegion('rightThigh')"/>
+
+<rect class="part"
+x="98" y="505" width="45" height="45" rx="8"
+onclick="openRegion('leftKnee')"/>
+
+<rect class="part"
+x="157" y="505" width="45" height="45" rx="8"
+onclick="openRegion('rightKnee')"/>
+
+<path class="part"
+d="M98 548 L143 548 L140 645 L103 645 Z"
+onclick="openRegion('leftLeg')"/>
+
+<path class="part"
+d="M157 548 L202 548 L197 645 L160 645 Z"
+onclick="openRegion('rightLeg')"/>
+
+<path class="part"
+d="M103 642 L140 642 L147 685 L88 692 Z"
+onclick="openRegion('leftFoot')"/>
+
+<path class="part"
+d="M160 642 L197 642 L212 692 L153 685 Z"
+onclick="openRegion('rightFoot')"/>
+
+</svg>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h2 id="regionTitle">Choose a body region</h2>
+
+<div id="regionContent">
+
+<p>
+Tap any body region on the left.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- INTERVENTIONS -->
+
+<section id="interventions" class="section">
+
+<h2>Interventions & Health Resources</h2>
+
+<div id="interventionList"></div>
+
+</section>
+
+
+<!-- EXPERIMENTAL -->
+
+<section id="research" class="section">
+
+<h2>Experimental Research Index</h2>
+
+<div class="warning">
+
+<strong>Research classification:</strong>
+
+<p>
+This section is an educational index of compounds with
+limited, experimental, unapproved or otherwise uncertain
+human evidence. Inclusion does not mean a compound is safe,
+effective or recommended.
+</p>
+
+</div>
+
+<div id="researchList"></div>
+
+</section>
+
+
+<!-- FOUNDATIONS -->
+
+<section id="foundations" class="section">
+
+<h2>Foundations of Health at 40</h2>
+
+<div class="card">
+<h3>Sleep</h3>
+<p>
+Adequate, consistent sleep supports recovery, cognition,
+mood and metabolic health.
+</p>
+</div>
+
+<div class="card">
+<h3>Resistance training</h3>
+<p>
+Progressive strength training supports muscle, bone and
+functional capacity.
+</p>
+</div>
+
+<div class="card">
+<h3>Aerobic fitness</h3>
+<p>
+Regular cardiovascular activity supports heart and metabolic
+health.
+</p>
+</div>
+
+<div class="card">
+<h3>Nutrition</h3>
+<p>
+Build dietary changes around adequate protein, fiber,
+micronutrients and hydration.
+</p>
+</div>
+
+<div class="card">
+<h3>Stress regulation</h3>
+<p>
+Breathing exercises, relaxation, music, visualization and
+other behavioral strategies may complement a broader
+health program.
+</p>
+</div>
+
+<div class="card">
+<h3>Movement & mobility</h3>
+<p>
+Maintain strength, mobility, balance and useful movement
+capacity.
+</p>
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<p><strong>Fitness & Health Research Atlas</strong></p>
+
+<p>
+Educational resource — not a diagnostic or treatment system.
+</p>
+
+<p>
+Trigger-point reference:
+<a href="https://www.triggerpoints.net/" target="_blank">
+Triggerpoints.net
+</a>
+</p>
+
+</footer>
+
+
+<script>
+
+/* =========================
+BODY DATABASE
+========================= */
+
+const bodyData={
+
+head:{
+name:"Head",
+locations:[
+"Forehead",
+"Temple",
+"Back of skull",
+"Behind ear",
+"Jaw"
+],
+causes:[
+"Musculoskeletal / myofascial",
+"Neurological",
+"Stress-related",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/head-and-neck"
+},
+
+neck:{
+name:"Neck",
+locations:[
+"Front of neck",
+"Side of neck",
+"Back of neck",
+"Base of skull"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/head-and-neck"
+},
+
+leftShoulder:{
+name:"Left Shoulder",
+locations:[
+"Front shoulder",
+"Top of shoulder",
+"Back shoulder",
+"Shoulder blade",
+"Upper arm"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/upper-back-shoulder-arm"
+},
+
+rightShoulder:{
+name:"Right Shoulder",
+locations:[
+"Front shoulder",
+"Top of shoulder",
+"Back shoulder",
+"Shoulder blade",
+"Upper arm"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/upper-back-shoulder-arm"
+},
+
+chest:{
+name:"Chest & Ribs",
+locations:[
+"Center chest",
+"Upper chest",
+"Side ribs",
+"Lower ribs"
+],
+causes:[
+"Musculoskeletal",
+"Myofascial",
+"Gastrointestinal",
+"Cardiopulmonary / medical"
+],
+trigger:"https://www.triggerpoints.net/"
+},
+
+abdomen:{
+name:"Abdomen",
+locations:[
+"Upper abdomen",
+"Lower abdomen",
+"Right abdomen",
+"Left abdomen"
+],
+causes:[
+"GI / nutrition",
+"Musculoskeletal",
+"Myofascial",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/"
+},
+
+leftArm:{
+name:"Left Upper Arm",
+locations:[
+"Front arm",
+"Back arm",
+"Outer arm",
+"Inner arm"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological"
+],
+trigger:"https://www.triggerpoints.net/upper-back-shoulder-arm"
+},
+
+rightArm:{
+name:"Right Upper Arm",
+locations:[
+"Front arm",
+"Back arm",
+"Outer arm",
+"Inner arm"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological"
+],
+trigger:"https://www.triggerpoints.net/upper-back-shoulder-arm"
+},
+
+leftForearm:{
+name:"Left Forearm & Hand",
+locations:[
+"Forearm",
+"Wrist",
+"Palm",
+"Back of hand",
+"Fingers"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological"
+],
+trigger:"https://www.triggerpoints.net/"
+},
+
+rightForearm:{
+name:"Right Forearm & Hand",
+locations:[
+"Forearm",
+"Wrist",
+"Palm",
+"Back of hand",
+"Fingers"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological"
+],
+trigger:"https://www.triggerpoints.net/"
+},
+
+pelvis:{
+name:"Pelvis & Hip",
+locations:[
+"Front hip",
+"Side hip",
+"Glute",
+"Back hip",
+"Pelvis"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Systemic / medical",
+"Genetic / inherited"
+],
+trigger:"https://www.triggerpoints.net/hip-thigh-knee"
+},
+
+leftThigh:{
+name:"Left Thigh",
+locations:[
+"Front thigh",
+"Outer thigh",
+"Inner thigh",
+"Back thigh"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological"
+],
+trigger:"https://www.triggerpoints.net/hip-thigh-knee"
+},
+
+rightThigh:{
+name:"Right Thigh",
+locations:[
+"Front thigh",
+"Outer thigh",
+"Inner thigh",
+"Back thigh"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological"
+],
+trigger:"https://www.triggerpoints.net/hip-thigh-knee"
+},
+
+leftKnee:{
+name:"Left Knee",
+locations:[
+"Front knee",
+"Inner knee",
+"Outer knee",
+"Back knee"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/hip-thigh-knee"
+},
+
+rightKnee:{
+name:"Right Knee",
+locations:[
+"Front knee",
+"Inner knee",
+"Outer knee",
+"Back knee"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/hip-thigh-knee"
+},
+
+leftLeg:{
+name:"Left Lower Leg",
+locations:[
+"Calf",
+"Shin",
+"Outer lower leg",
+"Achilles region"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Vascular / medical"
+],
+trigger:"https://www.triggerpoints.net/leg-ankle-foot"
+},
+
+rightLeg:{
+name:"Right Lower Leg",
+locations:[
+"Calf",
+"Shin",
+"Outer lower leg",
+"Achilles region"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Vascular / medical"
+],
+trigger:"https://www.triggerpoints.net/leg-ankle-foot"
+},
+
+leftFoot:{
+name:"Left Ankle & Foot",
+locations:[
+"Ankle",
+"Heel",
+"Arch",
+"Ball of foot",
+"Toes"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/leg-ankle-foot"
+},
+
+rightFoot:{
+name:"Right Ankle & Foot",
+locations:[
+"Ankle",
+"Heel",
+"Arch",
+"Ball of foot",
+"Toes"
+],
+causes:[
+"Biomechanical",
+"Myofascial",
+"Neurological",
+"Systemic / medical"
+],
+trigger:"https://www.triggerpoints.net/leg-ankle-foot"
+}
+
+};
+
+
+/* =========================
+INTERVENTION DATABASE
+========================= */
+
+const interventions=[
+
+{
+name:"Bacillus subtilis HU58",
+category:"Probiotic",
+evidence:"Limited strain-specific evidence",
+description:"A spore-forming Bacillus subtilis probiotic strain. Effects of a specific strain should not automatically be generalized to all probiotics or all gastrointestinal conditions.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=Bacillus+subtilis+HU58"
+},
+
+{
+name:"Vitamin B12",
+category:"Nutrient",
+evidence:"Strong when deficiency exists",
+description:"Essential for neurological function, DNA synthesis and red blood cell formation. Supplementation is particularly relevant when intake is inadequate or deficiency is present.",
+source:"https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/"
+},
+
+{
+name:"Milk Thistle / Silymarin",
+category:"Botanical",
+evidence:"Mixed / limited",
+description:"A botanical preparation studied particularly in liver-related and metabolic research.",
+source:"https://www.nccih.nih.gov/health/milk-thistle"
+},
+
+{
+name:"Panax Ginseng",
+category:"Botanical / Adaptogen",
+evidence:"Mixed / condition dependent",
+description:"Studied for fatigue, cognition, metabolic outcomes and other health applications.",
+source:"https://www.nccih.nih.gov/health/asian-ginseng"
+},
+
+{
+name:"Ashwagandha",
+category:"Botanical / Adaptogen",
+evidence:"Limited / condition dependent",
+description:"Studied in areas including stress, sleep and physical performance.",
+source:"https://www.nccih.nih.gov/health/ashwagandha"
+},
+
+{
+name:"Rhodiola",
+category:"Botanical / Adaptogen",
+evidence:"Limited / mixed",
+description:"Investigated for fatigue, stress and performance-related outcomes.",
+source:"https://www.nccih.nih.gov/health/herbsataglance"
+},
+
+{
+name:"Garlic",
+category:"Food / Phytochemical",
+evidence:"Moderate for some markers",
+description:"Garlic and its compounds have been studied in cardiovascular and metabolic health.",
+source:"https://www.nccih.nih.gov/health/herbsataglance"
+},
+
+{
+name:"Green Tea",
+category:"Food / Phytochemical",
+evidence:"Moderate / condition dependent",
+description:"Green tea catechins and caffeine have been studied in cardiometabolic research.",
+source:"https://www.nccih.nih.gov/health/herbsataglance"
+},
+
+{
+name:"Massage",
+category:"Recovery",
+evidence:"Moderate / symptom dependent",
+description:"May provide short-term relief for some pain and soreness outcomes.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=massage+pain"
+},
+
+{
+name:"Slow Breathing",
+category:"Behavioral",
+evidence:"Moderate",
+description:"Controlled slow breathing has been investigated for stress, relaxation and autonomic outcomes.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=slow+breathing+autonomic"
+},
+
+{
+name:"Visualization",
+category:"Behavioral",
+evidence:"Condition dependent",
+description:"Mental imagery is studied in rehabilitation, performance and behavioral contexts.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=mental+imagery+rehabilitation"
+},
+
+{
+name:"Classical Music / Music Relaxation",
+category:"Behavioral",
+evidence:"Condition dependent",
+description:"Music-based interventions have been studied for stress, anxiety and perceived pain.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=music+therapy+pain+stress"
+},
+
+{
+name:"Red / Near-Infrared Light",
+category:"Photobiomodulation",
+evidence:"Limited / condition dependent",
+description:"Photobiomodulation has been studied for pain and tissue-related applications, with results varying by condition and protocol.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=photobiomodulation"
+},
+
+{
+name:"TENS",
+category:"Device / Pain",
+evidence:"Condition dependent",
+description:"Transcutaneous electrical nerve stimulation is used for symptom-level pain modulation.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=TENS+pain"
+},
+
+{
+name:"Heat Therapy",
+category:"Recovery / Pain",
+evidence:"Condition dependent",
+description:"Heat can provide short-term symptom relief for some musculoskeletal conditions.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=heat+therapy+musculoskeletal+pain"
+},
+
+{
+name:"Cold Therapy",
+category:"Recovery / Pain",
+evidence:"Condition dependent",
+description:"Cold therapy can influence pain and perceived soreness, although appropriate use depends on the situation.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=cryotherapy+pain"
+},
+
+{
+name:"Foam Rolling",
+category:"Movement / Recovery",
+evidence:"Limited / mixed",
+description:"Studied for range of motion, soreness and recovery outcomes.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=foam+rolling+recovery"
+}
+
+];
+
+
+/* =========================
+EXPERIMENTAL DATABASE
+========================= */
+
+const experimental=[
+
+{
+name:"Andarine / S-4",
+type:"SARM",
+description:"Experimental selective androgen receptor modulator. Human safety and effectiveness are not established for general health use.",
+source:"https://www.fda.gov/drugs/fraudulent-products/certain-bodybuilding-products-put-consumers-risk-heart-attack-stroke-serious-liver-damage-and-more"
+},
+
+{
+name:"Ostarine / MK-2866",
+type:"SARM",
+description:"Experimental selective androgen receptor modulator investigated for anabolic effects. Not approved as a general health treatment.",
+source:"https://www.fda.gov/drugs/fraudulent-products/certain-bodybuilding-products-put-consumers-risk-heart-attack-stroke-serious-liver-damage-and-more"
+},
+
+{
+name:"Ligandrol / LGD-4033",
+type:"SARM",
+description:"Experimental SARM investigated for anabolic effects. Safety remains uncertain.",
+source:"https://www.fda.gov/drugs/fraudulent-products/certain-bodybuilding-products-put-consumers-risk-heart-attack-stroke-serious-liver-damage-and-more"
+},
+
+{
+name:"RAD-140 / Testolone",
+type:"SARM",
+description:"Experimental androgen receptor modulator with limited human evidence and important safety uncertainty.",
+source:"https://www.fda.gov/drugs/fraudulent-products/certain-bodybuilding-products-put-consumers-risk-heart-attack-stroke-serious-liver-damage-and-more"
+},
+
+{
+name:"S-23",
+type:"Experimental SARM",
+description:"Experimental androgen receptor modulator. Human safety and therapeutic effectiveness are not established.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=S-23+SARM"
+},
+
+{
+name:"YK-11",
+type:"Experimental compound",
+description:"Experimental compound with limited evidence and no established human therapeutic role.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=YK-11"
+},
+
+{
+name:"Cardarine / GW501516",
+type:"PPAR-delta agonist — not a SARM",
+description:"Experimental PPAR-delta agonist. It is not technically a SARM and has significant safety concerns.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=GW501516"
+},
+
+{
+name:"BPC-157",
+type:"Experimental peptide",
+description:"Experimental peptide studied primarily in preclinical research. Human evidence remains very limited.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=BPC-157"
+},
+
+{
+name:"MK-677 / Ibutamoren",
+type:"Experimental ghrelin-receptor agonist",
+description:"Experimental growth-hormone secretagogue. It is not a SARM.",
+source:"https://pubmed.ncbi.nlm.nih.gov/?term=ibutamoren"
+}
+
+];
+
+
+/* =========================
+FUNCTIONS
+========================= */
+
+function openRegion(id){
+
+const data=bodyData[id];
+
+if(!data)return;
+
+document.querySelectorAll(".part")
+.forEach(x=>x.classList.remove("selected"));
+
+const element=document.getElementById(id);
+
+if(element)element.classList.add("selected");
+
+document.getElementById("regionTitle").textContent=data.name;
+
+document.getElementById("regionContent").innerHTML=`
+
+<div class="card">
+
+<h3>Pain locations</h3>
+
+${data.locations.map(location=>`
+
+<button class="location"
+onclick="showPain('${safe(location)}','${safe(data.name)}')">
+
+${location}
+
+</button>
+
+`).join("")}
+
+</div>
+
+<div class="card">
+
+<h3>Possible contributor categories</h3>
+
+${data.causes.map(cause=>
+`<span class="badge">${cause}</span>`
+).join("")}
+
+<p>
+These are research categories rather than diagnoses.
+A symptom can have multiple contributors.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>External trigger-point reference</h3>
+
+<p>
+Open the relevant Triggerpoints.net section for additional
+external reference material.
+</p>
+
+<a href="${data.trigger}" target="_blank">
+Open Triggerpoints.net ↗
+</a>
+
+</div>
+
+<div class="card">
+
+<h3>Research framework</h3>
+
+<p>
+When investigating a symptom, consider biomechanics,
+activity and loading, sleep, nutrition, medications,
+neurological features and systemic factors rather than
+assuming a single cause.
+</p>
+
+</div>
+
+`;
+
+}
+
+
+function showPain(location,region){
+
+document.getElementById("regionContent").innerHTML=`
+
+<div class="card">
+
+<h3>${location}</h3>
+
+<p>
+Pain location selected within <strong>${region}</strong>.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Biomechanical considerations</h3>
+
+<p>
+Training load, repetitive movement, posture, joint mechanics,
+muscle/tendon loading and previous injury may contribute
+depending on the presentation.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Myofascial considerations</h3>
+
+<p>
+Muscle-related referred pain and trigger-point patterns can
+be considered as one possible explanation among several.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Nutrition / gastrointestinal considerations</h3>
+
+<p>
+For appropriate symptoms, hydration, nutritional status,
+gastrointestinal symptoms and food-related factors may
+be worth investigating. These relationships are
+condition-specific and should not be assumed.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Neurological considerations</h3>
+
+<p>
+Nerve irritation, nerve entrapment or referred neurological
+pain may be relevant when symptoms have neurological
+characteristics.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Systemic / medical considerations</h3>
+
+<p>
+Inflammatory, infectious, endocrine, metabolic, vascular,
+cardiopulmonary or medication-related conditions can
+sometimes produce pain.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Genetic considerations</h3>
+
+<p>
+Inherited factors can influence susceptibility to some
+conditions, but genetics should not automatically be
+assumed to explain an individual pain location.
+</p>
+
+</div>
+
+<div class="warning">
+
+<strong>Safety:</strong>
+
+<p>
+Severe, persistent, unexplained or rapidly worsening
+symptoms warrant appropriate medical evaluation.
+</p>
+
+</div>
+
+<button class="location"
+onclick="openRegionByName('${safe(region)}')">
+
+← Back to ${region}
+
+</button>
+
+`;
+
+}
+
+
+function openRegionByName(name){
+
+for(const id in bodyData){
+
+if(bodyData[id].name===name){
+
+openRegion(id);
+
+return;
+
+}
+
+}
+
+}
+
+
+function safe(text){
+
+return text
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'")
+.replace(/"/g,"&quot;");
+
+}
+
+
+function showSection(id,button){
+
+document.querySelectorAll(".section")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById(id)
+.classList.add("active");
+
+document.querySelectorAll("nav button")
+.forEach(x=>x.classList.remove("active"));
+
+button.classList.add("active");
+
+}
+
+
+function renderInterventions(data){
+
+document.getElementById("interventionList").innerHTML=
+
+data.map(item=>`
+
+<div class="card">
+
+<h3>${item.name}</h3>
+
+<span class="badge">${item.category}</span>
+
+<span class="badge">${item.evidence}</span>
+
+<p>${item.description}</p>
+
+<a href="${item.source}" target="_blank">
+Research source ↗
+</a>
+
+</div>
+
+`).join("");
+
+}
+
+
+function renderExperimental(data){
+
+document.getElementById("researchList").innerHTML=
+
+data.map(item=>`
+
+<div class="card danger">
+
+<h3>${item.name}</h3>
+
+<span class="badge">${item.type}</span>
+
+<p>${item.description}</p>
+
+<a href="${item.source}" target="_blank">
+Research / safety information ↗
+</a>
+
+</div>
+
+`).join("");
+
+}
+
+
+function searchAll(){
+
+const q=document
+.getElementById("searchBox")
+.value
+.toLowerCase()
+.trim();
+
+if(!q){
+
+renderInterventions(interventions);
+renderExperimental(experimental);
+
+return;
+
+}
+
+const interventionMatches=interventions.filter(item=>
+(item.name+" "+item.category+" "+item.description)
+.toLowerCase()
+.includes(q)
+);
+
+const researchMatches=experimental.filter(item=>
+(item.name+" "+item.type+" "+item.description)
+.toLowerCase()
+.includes(q)
+);
+
+renderInterventions(interventionMatches);
+renderExperimental(researchMatches);
+
+}
+
+
+/* INITIALIZE */
+
+renderInterventions(interventions);
+renderExperimental(experimental);
+
+</script>
+
+</body>
+  </html>
